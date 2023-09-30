@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
+use App\Lib\LinkPreview\LinkPreview;
 
 class BookmarkController extends Controller
 {
@@ -121,9 +122,10 @@ class BookmarkController extends Controller
      * URLが存在しないなどの理由で失敗したらバリデーションエラー扱いにする
      *
      * @param Request $request
+     * @param CreateBookmarkUseCase $useCase
      * @return Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function create(CreateBookmarkRequest $request)
+    public function create(CreateBookmarkRequest $request, CreateBookmarkUseCase $useCase)
     {
          
 
@@ -131,7 +133,7 @@ class BookmarkController extends Controller
         // @see https://www.linkpreview.net/
         $previewClient = new Client($request->url);
        
-        $useCase = new CreateBookmarkUseCase();
+        
         $useCase->handle($request->url, $request->category, $request->comment);
         
 
